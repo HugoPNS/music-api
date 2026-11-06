@@ -1,0 +1,22 @@
+{
+  "name": "music-api",
+  "version": "1.0.0",
+  "description": "CST-391 Milestone 3 - Music App REST API (Express, TypeScript, MySQL)",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsc && node dist/server.js",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "mysql2": "^3.24.6"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2"
+  }
+}

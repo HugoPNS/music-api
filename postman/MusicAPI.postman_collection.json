@@ -1,0 +1,434 @@
+{
+  "info": {
+    "name": "Music API - CST-391 Milestone 3",
+    "description": "REST API for the Music App mood feature. Base URL: http://localhost:5000/api. Authentication is not required this milestone; endpoints that need \"the current user\" read an X-User-Id header.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api"
+    }
+  ],
+  "item": [
+    {
+      "name": "Create",
+      "item": [
+        {
+          "name": "Create album",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Blonde\",\n  \"artist\": \"Frank Ocean\",\n  \"year\": 2016,\n  \"default_mood_id\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/albums",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "albums"
+              ]
+            },
+            "description": "Creates an album. title and artist required; year and default_mood_id optional. Returns 201 with the new album."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Read",
+      "item": [
+        {
+          "name": "Get all moods",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/moods",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "moods"
+              ]
+            },
+            "description": "Lists the predefined moods."
+          }
+        },
+        {
+          "name": "Get all albums",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/albums",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "albums"
+              ]
+            },
+            "description": "Lists all albums. If X-User-Id is sent, effective_mood reflects that user's personal overrides."
+          }
+        },
+        {
+          "name": "Get one album",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/albums/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "albums",
+                "1"
+              ]
+            },
+            "description": "Returns one album or 404."
+          }
+        },
+        {
+          "name": "Get albums by mood",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-User-Id",
+                "value": "2"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/albums/mood/3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "albums",
+                "mood",
+                "3"
+              ]
+            },
+            "description": "Albums whose effective mood matches. Send X-User-Id to include personal overrides."
+          }
+        },
+        {
+          "name": "Get effective mood for album",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-User-Id",
+                "value": "2"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/albums/3/mood",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "albums",
+                "3",
+                "mood"
+              ]
+            },
+            "description": "Returns the mood this user sees and whether it is \"personal\" or \"default\"."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Update",
+      "item": [
+        {
+          "name": "Update album",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Blonde\",\n  \"artist\": \"Frank Ocean\",\n  \"year\": 2016,\n  \"default_mood_id\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/albums/4",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "albums",
+                "4"
+              ]
+            },
+            "description": "Replaces title, artist, year, and default mood. 404 if the album does not exist."
+          }
+        },
+        {
+          "name": "Set default mood (admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mood_id\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/albums/1/mood",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "albums",
+                "1",
+                "mood"
+              ]
+            },
+            "description": "Changes only the album's default mood. Body: mood_id."
+          }
+        },
+        {
+          "name": "Set personal mood (customer)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-User-Id",
+                "value": "2"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mood_id\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/albums/3/personal-mood",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "albums",
+                "3",
+                "personal-mood"
+              ]
+            },
+            "description": "Creates or updates the current user's personal mood. Requires X-User-Id header."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Delete",
+      "item": [
+        {
+          "name": "Delete personal mood (customer)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-User-Id",
+                "value": "2"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/albums/3/personal-mood",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "albums",
+                "3",
+                "personal-mood"
+              ]
+            },
+            "description": "Removes the user's override so the default shows again. 404 if none exists."
+          }
+        },
+        {
+          "name": "Delete album",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/albums/4",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "albums",
+                "4"
+              ]
+            },
+            "description": "Deletes an album (its personal-mood rows are removed by cascade). Returns {\"deleted\": id}."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Error cases",
+      "item": [
+        {
+          "name": "Create album - missing artist (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"x\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/albums",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "albums"
+              ]
+            },
+            "description": "Validation error."
+          }
+        },
+        {
+          "name": "Personal mood - no X-User-Id (400)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mood_id\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/albums/3/personal-mood",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "albums",
+                "3",
+                "personal-mood"
+              ]
+            },
+            "description": "Missing header."
+          }
+        },
+        {
+          "name": "Personal mood - bad mood id (400)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-User-Id",
+                "value": "2"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mood_id\": 99\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/albums/3/personal-mood",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "albums",
+                "3",
+                "personal-mood"
+              ]
+            },
+            "description": "Foreign key violation is mapped to 400."
+          }
+        },
+        {
+          "name": "Get album - not found (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/albums/999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "albums",
+                "999"
+              ]
+            },
+            "description": "Unknown id."
+          }
+        }
+      ]
+    }
+  ]
+}
